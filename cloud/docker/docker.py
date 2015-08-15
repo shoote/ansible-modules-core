@@ -1334,6 +1334,9 @@ class DockerManager(object):
                     status.startswith('Download complete')):
                 # Image was updated. Increment the pull counter.
                 self.increment_counter('pulled')
+            elif status.endswith("already being pulled by another client. Waiting."):
+                # Image was pulled by another client. Don't incerement the counter.
+                pass
             else:
                 # Unrecognized status string.
                 self.module.fail_json(msg="Unrecognized status from pull.", status=status, changes=changes)
